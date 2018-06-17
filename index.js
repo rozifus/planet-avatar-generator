@@ -1,6 +1,4 @@
 
-'use strict'
-
 import { Scene, PerspectiveCamera, WebGLRenderer, WebGLRenderTarget, 
          LinearFilter, NearestFilter } from 'three'; 
 
