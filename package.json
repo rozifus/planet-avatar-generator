@@ -1,6 +1,6 @@
 {
   "name": "planet-avatar-generator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Deterministic Planet Image Generator",
   "main": "index.js",
   "scripts": {

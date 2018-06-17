@@ -1,23 +1,22 @@
 
-import { Scene, PerspectiveCamera, WebGLRenderer, WebGLRenderTarget, 
-         LinearFilter, NearestFilter } from 'three'; 
+const THREE = require('three');
 
 module.exports = function() {
 
-    var scene = new Scene();
+    var scene = new THREE.Scene();
     var width = window.innerWidth
     var height = window.innerHeight;
-    var camera = new PerspectiveCamera( 70, width/height, 1, 1000 );
-    var renderer = new WebGLRenderer(); 
+    var camera = new THREE.PerspectiveCamera( 70, width/height, 1, 1000 );
+    var renderer = new THREE.WebGLRenderer(); 
     renderer.setSize( width,height);
     document.body.appendChild( renderer.domElement );
     
     //// This is where we create our off-screen render target ////
     
     // Create a different scene to hold our buffer objects
-    var bufferScene = new Scene();
+    var bufferScene = new THREE.Scene();
     // Create the texture that will store our result
-    var bufferTexture = new WebGLRenderTarget( window.innerWidth, window.innerHeight, { minFilter: LinearFilter, magFilter: NearestFilter});
+    var bufferTexture = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter});
     
     ////
     // Add anything you want to render/capture in bufferScene here //
