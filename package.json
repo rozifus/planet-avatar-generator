@@ -24,6 +24,7 @@
   "homepage": "https://github.com/rozifus/planet-avatar-generator#readme",
   "dependencies": {
     "canvas": "^1.6.11",
+    "jsdom": "^11.11.0",
     "three": "^0.93.0"
   }
 }

@@ -1,14 +1,44 @@
 
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const window = (new JSDOM(``, { pretendToBeVisual: true })).window;
+
 global.THREE = require('three');
 require('./three-canvasrenderer.js');
 require('./three-projector.js');
 
+// Reference:
+// http://learningthreejs.com/blog/2013/09/16/how-to-make-the-earth-in-webgl/
+// https://github.com/Automattic/node-canvas/issues/730
+
 var Canvas = require('canvas');
 
 module.exports = function() {
+    const size = 1024;
+    renderFromTexture('./earthmap1k.jpg', size, size).then(imageData => {
+        console.log(imageData);
+    });
+}
 
-    var width = 1024 
-    var height = 1024;
+async function loadTexture(textureFile) {
+    return new Promise(resolve => {
+        (new THREE.TextureLoader()).load(textureFile, result => resolve(result));
+    })
+}
+
+async function loadTexture2(textureFile) {
+    return new Promise(resolve => {
+        var image = new window.Image();
+        image.src = textureFile;
+
+        var texture = new THREE.Texture(image);
+        texture.needsUpdate = true;
+
+        resolve(texture);
+    })
+}
+
+async function renderFromTexture(textureFile, width, height) {
 
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera( 70, width/height, 1, 1000 );
@@ -16,21 +46,15 @@ module.exports = function() {
     camera.position.y = 150;
     camera.position.z = 400;
 
-    // BEGIN TEST DATA
-    var geometry = new THREE.BoxGeometry(200, 200, 200);
-    for ( var i = 0; i < geometry.faces.length; i += 2 ) {
-        var hex = Math.random() * 0xffffff;
-        geometry.faces[ i ].color.setHex( hex );
-        geometry.faces[ i + 1 ].color.setHex( hex );
-    }
-    
-    var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5 } );
-    
-    cube = new THREE.Mesh(geometry, material);
-    cube.position.y = 150;
-    cube.rotation.y = 45;
-    scene.add(cube);
-
+    var geometry = new THREE.SphereGeometry(200, 32, 32)
+    /*
+    var texture = await loadTexture(textureFile).catch(err => console.log(err));
+    */
+    var texture = await loadTexture2(textureFile);
+    var material = new THREE.MeshPhongMaterial({map: texture})
+    var earthMesh = new THREE.Mesh(geometry, material)
+    earthMesh.position.y = 150;
+    scene.add(earthMesh)
     // END TEST DATA
 
     var canvas = new Canvas(width, height);
@@ -51,9 +75,9 @@ module.exports = function() {
     //// This is where we create our off-screen render target ////
     
     // Create a different scene to hold our buffer objects
-    var bufferScene = new THREE.Scene();
+    //var bufferScene = new THREE.Scene();
     // Create the texture that will store our result
-    var bufferTexture = new THREE.WebGLRenderTarget( width, height, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter});
+    //var bufferTexture = new THREE.WebGLRenderTarget( width, height, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter});
     
     ////
     // Add anything you want to render/capture in bufferScene here //
@@ -61,6 +85,6 @@ module.exports = function() {
     
     renderer.render( scene, camera );
 
-    console.log(canvas.toDataURL());
+    return canvas.toDataURL();
 
 };
