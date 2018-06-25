@@ -2,6 +2,10 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+const Canvas = require('canvas');
+
+const THREE = require('three');
+
 THREE.SpriteCanvasMaterial = function ( parameters ) {
 
 	THREE.Material.call( this );
@@ -45,7 +49,7 @@ THREE.CanvasRenderer = function ( parameters ) {
 
 		_canvas = parameters.canvas !== undefined
 				 ? parameters.canvas
-				 : document.createElement( 'canvas' ),
+				 : new Canvas(),
 
 		_canvasWidth = _canvas.width,
 		_canvasHeight = _canvas.height,
@@ -858,7 +862,7 @@ THREE.CanvasRenderer = function ( parameters ) {
 
 		//
 
-		var canvas = document.createElement( 'canvas' );
+		var canvas = new Canvas();
 		canvas.width = image.width * ( mirrorX ? 2 : 1 );
 		canvas.height = image.height * ( mirrorY ? 2 : 1 );
 
