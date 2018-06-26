@@ -6113,6 +6113,16 @@ tempfile@^2.0.0:
     temp-dir "^1.0.0"
     uuid "^3.0.1"
 
+three-software-renderer@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/three-software-renderer/-/three-software-renderer-1.2.0.tgz#c05e4077dd10e15369106e08cc5018132f212799"
+  dependencies:
+    three "^0.82.1"
+
+three@^0.82.1:
+  version "0.82.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.82.1.tgz#f63c3730971520c54479e3627d370d764a4a8383"
+
 three@^0.93.0:
   version "0.93.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.93.0.tgz#3fd6c367ef4554abbb6e16ad69936283e895c123"
